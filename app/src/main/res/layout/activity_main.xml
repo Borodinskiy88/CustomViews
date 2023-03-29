@@ -16,6 +16,7 @@
         app:color2="@color/teal_700"
         app:color3="@color/purple_500"
         app:color4="@color/purple_200"
+        app:color5="@color/gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

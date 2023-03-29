@@ -1,10 +1,7 @@
 package ru.netology.customviews.ui
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.PointF
-import android.graphics.RectF
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.withStyledAttributes
@@ -28,6 +25,7 @@ class StatsView @JvmOverloads constructor(
     private var textSize = AndroidUtils.dp(context, 20).toFloat()
     private var lineWidth = AndroidUtils.dp(context, 5)
     private var colors = emptyList<Int>()
+    private var notFilledColor = 0
 
     init {
         context.withStyledAttributes(attributeSet, R.styleable.StatsView) {
@@ -40,6 +38,8 @@ class StatsView @JvmOverloads constructor(
                 getColor(R.styleable.StatsView_color3, generateRandomColor()),
                 getColor(R.styleable.StatsView_color4, generateRandomColor()),
             )
+
+            notFilledColor = getColor(R.styleable.StatsView_color5, Color.GRAY)
         }
     }
 
@@ -69,6 +69,16 @@ class StatsView @JvmOverloads constructor(
         textAlign = Paint.Align.CENTER
     }
 
+    private val notFilled = Paint(
+        Paint.ANTI_ALIAS_FLAG
+    ).apply {
+        strokeWidth = lineWidth.toFloat()
+        style = Paint.Style.STROKE
+        strokeJoin = Paint.Join.ROUND
+        strokeCap = Paint.Cap.ROUND
+        color = notFilledColor
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         radius = min(w, h) / 2F - lineWidth
         center = PointF(w / 2F, h / 2F)
@@ -85,17 +95,30 @@ class StatsView @JvmOverloads constructor(
             return
         }
 
-        var startAngle = -90F
+        canvas.drawCircle(
+            center.x,
+            center.y,
+            radius,
+            notFilled
+        )
 
+        var startAngle = -90F
         data.forEachIndexed { index, datum ->
-            val angle = datum / data.sum() * 360F * data.size / data.size
+            val angle = datum / data.sum() * 360F * data.size / 4
             paint.color = colors.getOrElse(index) { generateRandomColor() }
             canvas.drawArc(oval, startAngle, angle, false, paint)
             startAngle += angle
         }
 
+        paint.color = colors[0]
+        canvas.drawPoint(
+            center.x,
+            center.y - radius,
+            paint
+        )
+
         canvas.drawText(
-            "%.2f%%".format(data[0] / (data[0] * data.size) * data.size * 100),
+            "%.2f%%".format(data[0] / (data[0] * 4) * data.size * 100),
             center.x,
             center.y + textPaint.textSize / 4,
             textPaint

@@ -1,7 +1,7 @@
 package ru.netology.customviews
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import ru.netology.customviews.ui.StatsView
 
 class MainActivity : AppCompatActivity() {
@@ -13,10 +13,6 @@ class MainActivity : AppCompatActivity() {
             500F,
             500F,
             500F,
-            500F,
-            200F,
-            200F,
-            200F,
         )
     }
 }

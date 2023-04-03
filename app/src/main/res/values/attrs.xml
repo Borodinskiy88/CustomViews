@@ -8,5 +8,10 @@
         <attr name="color3" format="color|reference" />
         <attr name="color4" format="color|reference" />
         <attr name="color5" format="color|reference" />
+        <attr name="attributes" format="enum">
+            <enum name="Rotation" value="0" />
+            <enum name="Sequential" value="1" />
+            <enum name="Bidirectional" value="2" />
+        </attr>
     </declare-styleable>
 </resources>
